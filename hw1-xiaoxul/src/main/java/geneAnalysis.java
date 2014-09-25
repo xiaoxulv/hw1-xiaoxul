@@ -21,7 +21,10 @@ import com.aliasi.util.AbstractExternalizable;
 
 
 public class geneAnalysis extends JCasAnnotator_ImplBase {
-
+	/**
+	 * process(Jcas aCas) does main work of the whole CPE, it uses LINGPIPE as a gene name source,
+	 * manipulate the split sentences from the cas, retrive the gene name and store them.
+	 */
   @Override
   public void process(JCas aCas) throws AnalysisEngineProcessException {
     // TODO Auto-generated method stub
@@ -29,7 +32,7 @@ public class geneAnalysis extends JCasAnnotator_ImplBase {
     int count = 0;
     
     File modelFile = new File("src/main/resources/data/ne-en-bio-genetag.HmmChunker");
-    System.out.println("Reading chunker from file=" + modelFile);
+    System.out.println("Reading chunker from file =" + modelFile);
     FSIterator it = jcas.getAnnotationIndex(sentence.type).iterator();
     Chunker chunker = null;
    
@@ -42,6 +45,7 @@ public class geneAnalysis extends JCasAnnotator_ImplBase {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    
     while(it.hasNext()){
         sentence ann = (sentence)it.get();  
         String sen = ann.getContent();
@@ -51,13 +55,15 @@ public class geneAnalysis extends JCasAnnotator_ImplBase {
        
         String gene;
         Set<Chunk> set = chunking.chunkSet();
-        Iterator itor = set.iterator();
-        while(itor.hasNext()){
-            Chunk c = (Chunk) itor.next();
+        Iterator iter = set.iterator();
+        while(iter.hasNext()){
+            Chunk c = (Chunk) iter.next();
             gene = (sen.substring(c.start(), c.end()));
             //System.out.println(c.start());
             //System.out.println(c.end());
-            System.out.println(gene);
+            //System.out.println(gene);
+            
+            //do not forget that the space should be got rid of 
             int begin = c.start() ;
             int end = c.end();
             begin = begin - countBlank(sen.substring(0,begin)) ;
@@ -71,7 +77,7 @@ public class geneAnalysis extends JCasAnnotator_ImplBase {
             gt.addToIndexes();
            
         }
-        System.out.println(count++);
+        //System.out.println(count++);
         it.next();
         
     }
@@ -126,14 +132,14 @@ public class geneAnalysis extends JCasAnnotator_ImplBase {
     
 
   
-  private int countBlank(String phrase){
-    int countBlank = 0;
-    for(int i=0; i<phrase.length(); i++) {
-        if(Character.isWhitespace(phrase.charAt(i))) {
-            countBlank++;
+  private int countBlank(String s){
+    int count = 0;
+    for(int i = 0; i < s.length(); i++) {
+        if(Character.isWhitespace(s.charAt(i))) {
+            count++;
         }
      }
-    return countBlank;
+    return count;
   }
   
  

@@ -15,7 +15,9 @@ import org.xml.sax.SAXException;
 public class consumer extends CasConsumer_ImplBase {
 	private BufferedWriter buf;
 	public static final String PARAM_OUTPUTDIR = "outputfile";
-
+	/**
+	 * process() write the gene ID,name,index into the disk file, which are got from geneAnalysis. 
+	 */
 	@Override
 	public void processCas(CAS aCAS) throws ResourceProcessException {
 		// TODO Auto-generated method stub
@@ -39,6 +41,7 @@ public class consumer extends CasConsumer_ImplBase {
 	    String geneId = "";
 	    String geneContent = "";
 	    int start,end = -1;
+	    
 	    while(it.hasNext()){
 	    	Gene annotation = (Gene) it.next();
 			geneId = annotation.getID();
@@ -46,7 +49,6 @@ public class consumer extends CasConsumer_ImplBase {
 			start = annotation.getBegin();
 			end = annotation.getEnd();
 
-	    	
 			try {
 				writeIntoFile(geneId, geneContent, start, end);
 				System.out.println("writing~!");

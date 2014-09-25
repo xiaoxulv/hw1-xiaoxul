@@ -25,7 +25,7 @@ public class reader extends CollectionReader_ImplBase {
 	public static final String PARAM_INPUTDIR = "inputFile";
 	
 	/**
-	 * initialize() will open the input file and 
+	 * initialize() open the input file, try to use file2string, get rid of all the annoying stream.
 	 */
 	public void initialize() throws ResourceInitializationException {
 		
@@ -59,6 +59,12 @@ public class reader extends CollectionReader_ImplBase {
 //	}
 	}
 	
+	
+	/**
+	 * getNext(CAS aCAS) put what Initialize get from the file to CAS.
+	 * @param CAS
+	 * 
+	 */
 	@Override
 	public void getNext(CAS aCAS) throws IOException, CollectionException {
 		// TODO Auto-generated method stub
